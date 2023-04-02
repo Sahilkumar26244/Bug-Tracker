@@ -5,9 +5,9 @@ import logo from '../assets/LoginLogo.png';
 function Login() {
   return (
     <Box background={"#EAEBED"} height={"680"} display={"flex"} justifyContent={"center"} alignItems={"center"} >
-        <Box>
-          <Img src={logo} />
-          <Heading border={"1px solid black"} width={"30%"} margin={"auto"} textAlign={"center"} >Login...</Heading>
+        <Box width={"50%"} height={"auto"} display={"flex"} justifyContent={"center"} flexDirection={"column"}>
+          <Img margin={"auto"} width={"30%"} src={logo} />
+          <Heading width={"30%"} margin={"auto"} textAlign={"center"} >Login...</Heading>
         </Box>
         <FormControl width={"30%"} margin={"auto"} padding={"20px"} display={"flex"} flexDirection={"column"} gap={"20px"} >
             <Input type='text' placeholder='Enter Name' />
