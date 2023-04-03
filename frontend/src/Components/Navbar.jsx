@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 function Navbar() {
   return (
     <div>
-        <Flex bg='#479ece' w='100%' color='white' p={4} align={"center"} position={"sticky"} >
+        <Flex zIndex={'overlay'} bg='#479ece' w='100%' color='white' p={4} align={"center"} position={"fixed"}  >
             <Link to='/' ><Box fontSize={"20px"} fontWeight={"bold"} >Bug Tracker App</Box></Link>
             <Spacer />
             <Flex gap={"20px"} >

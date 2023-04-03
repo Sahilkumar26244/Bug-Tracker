@@ -4,7 +4,7 @@ import logo from '../assets/SignupLogo.png';
 
 function Signup() {
   return (
-    <Box background={"#EAEBED"} height={"680"} display={"flex"} justifyContent={"center"} alignItems={"center"} >
+    <Box background={"#EAEBED"} height={"750"} display={"flex"} justifyContent={"center"} alignItems={"center"} >
         <Box width={"50%"} height={"auto"} display={"flex"} justifyContent={"center"} flexDirection={"column"}>
           <Img margin={"auto"} width={"30%"} src={logo} />
           <Heading width={"30%"} margin={"auto"} textAlign={"center"} >Sign Up...</Heading>
