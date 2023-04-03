@@ -9,12 +9,12 @@ function Login() {
           <Img margin={"auto"} width={"30%"} src={logo} />
           <Heading width={"30%"} margin={"auto"} textAlign={"center"} >Login...</Heading>
         </Box>
-        <FormControl width={"30%"} margin={"auto"} padding={"20px"} display={"flex"} flexDirection={"column"} gap={"20px"} >
+        <FormControl padding={"40px 20px 40px 20px"} width={"30%"} margin={"auto"} borderRadius={"10px"}  display={"flex"} flexDirection={"column"} gap={"20px"} >
             <Input type='text' placeholder='Enter Name' />
             <Input type='email' placeholder='Enter Email' />
             <Input type='password' placeholder='Enter Password' />
-            <Button background={"#2E424D"} color={"white"} >Submit</Button>
-            <FormHelperText>We'll never share your email.</FormHelperText>
+            <Button background={"#479ece"} color={"white"} >Submit</Button>
+            <FormHelperText>New User? <a href='/signup' >SignUp</a> </FormHelperText>
         </FormControl>
     </Box>
   )
