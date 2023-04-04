@@ -9,7 +9,7 @@ const registerUser = async(req,res) => {
     const isUser = await User.findOne({email});
     if(isUser)
     {
-        res.send({"msg":"User already exists, please login!"})
+        res.send({"msg":"User already exists, please login!",isUser})
     }
     else
     {
@@ -25,9 +25,15 @@ const registerUser = async(req,res) => {
             })
             try {
                 await new_user.save()
-                res.send({"msg":"Signup Successfully Done!"})
+                res.status(201).json({
+                    _id:new_user._id,
+                    name:new_user.name,
+                    email:new_user.email,
+                    "msg":"SignUp Successfully Done!!"
+                })
             } catch (error) {
-                res.send({"msg":"Something went wrong, please try again!"})
+                res.status(400)
+                throw new Error("Error Occured")
                 
             }
         })
@@ -47,11 +53,17 @@ const authUser = async(req,res) => {
         }
         if(result){
             const token = jwt.sign({user_id},process.env.SECRET_KEY)
-            res.send({message:"Login successfully",token,email:user.email})
+            res.json({
+                _id:user._id,
+                name:user.name,
+                email:user.email,
+                token:token
+            })
         }
         else
         {
-            res.send("Login Failed!")
+            res.status(400)
+            throw new Error("Invalid email or password!")
         }
     })
 };

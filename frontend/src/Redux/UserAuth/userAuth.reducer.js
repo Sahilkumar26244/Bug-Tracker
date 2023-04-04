@@ -1,23 +1,32 @@
 import * as types from './userAuth.types';
 
-const initialState = {
-    user:JSON.parse(localStorage.getItem("userInfoF")) || "",
-    isLoading:false,
-    isError:false
+//JSON.parse(localStorage.getItem("userInfoF")) ||
+export const userLoginReducer = (state={},action) => {
+    switch (action.type) {
+        case types.USER_LOGIN_REQUEST:
+            return {loading:true}
+        case types.USER_LOGIN_SUCCESS:
+            return {...state,loading:false,userInfo:action.payload}
+        case types.USER_LOGIN_FAIL:
+            return {...state,loading:false,error:action.payload}
+        case types.USER_LOGOUT:
+            return {};
+    
+        default:
+            return state;
+    }
 };
 
-const reducer = (state=initialState,action) => {
-    const {type,payload} = action;
-
-    switch (type) {
-        case types.USER_AUTH_GET:
-            return {...state,user:payload}
-        case types.USER_AUTH_DELETE:
-            return {...state,user:""}
+export const userRegisterReducer = (state={},action) => {
+    switch (action.type) {
+        case types.USER_REGISTER_REQUEST:
+            return {loading:true}
+        case types.USER_REGISTER_SUCCESS:
+            return {loading:false,userInfo:action.payload}
+        case types.USER_REGISTER_FAIL:
+            return {loading:false,error:action.payload}
     
         default:
             return state;
     }
 }
-
-export {reducer}
