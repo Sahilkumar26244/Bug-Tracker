@@ -10,7 +10,7 @@ function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(userInfo);
+  // console.log(userInfo);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -23,7 +23,7 @@ function Navbar() {
             <Link to='/' ><Box fontSize={"20px"} fontWeight={"bold"} >Bug Tracker App</Box></Link>
             <Spacer />
             {
-              userInfo == null ? (<Flex gap={"20px"} >
+              userInfo?.token == undefined ? (<Flex gap={"20px"} >
               <Button colorScheme='white' variant={'outline'}  ><Link to='/login' >Login</Link></Button>
               <Button colorScheme='teal' variant={'solid'}  ><Link to='/signup' >SignUp</Link></Button>
               </Flex>)

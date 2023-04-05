@@ -1,71 +1,59 @@
 const {User} = require('../model/userModel');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const generateToken = require('../utils/generateToken');
 require('dotenv').config();
+const asyncHandler = require('express-async-handler')
 
-const registerUser = async(req,res) => {
+const registerUser = asyncHandler( async(req,res) => {
     const {name,email,password} = req.body;
 
-    const isUser = await User.findOne({email});
-    if(isUser)
+    const userExists = await User.findOne({email});
+    if(userExists)
     {
-        res.send({"msg":"User already exists, please login!",isUser})
+        res.status(400);
+        throw new Error("User Already Exists")
     }
-    else
-    {
-        bcrypt.hash(password,4,async function(err,hash){
-            if(err)
-            {
-                res.send("Something went wrong, please try again!")
-            }
-            const new_user = new User({
-                name,
-                email,
-                password:hash
-            })
-            try {
-                await new_user.save()
-                res.status(201).json({
-                    _id:new_user._id,
-                    name:new_user.name,
-                    email:new_user.email,
-                    "msg":"SignUp Successfully Done!!"
-                })
-            } catch (error) {
-                res.status(400)
-                throw new Error("Error Occured")
-                
-            }
+    const user = await User.create({
+        name,
+        email,
+        password
+    });
+
+    if(user) {
+        res.status(201).json({
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            token:generateToken(user._id)
+
         })
+    } else{
+        res.status(400)
+        throw new Error("Error Occured")
     }
-}
 
-const authUser = async(req,res) => {
+    res.json({
+        name,
+        email,
+    });
+})
+
+const authUser = asyncHandler( async(req,res) => {
     const {email,password} = req.body;
-    const user = await User.findOne({email});
-    const hashed_password = user.password;
-    const user_id = user._id;
 
-    bcrypt.compare(password,hashed_password,function(err,result){
-        if(err)
-        {
-            res.send("Something went wrong, please try again!")
-        }
-        if(result){
-            const token = jwt.sign({user_id},process.env.SECRET_KEY)
-            res.json({
-                _id:user._id,
-                name:user.name,
-                email:user.email,
-                token:token
-            })
-        }
-        else
-        {
-            res.status(400)
-            throw new Error("Invalid email or password!")
-        }
-    })
-};
+    const user = await User.findOne({email});
+
+    if(user && (await user.matchPassword(password))) {
+        res.json({
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            token:generateToken(user._id)
+        });
+    }else{
+        res.status(400)
+        throw new Error("Invalid email or password!")
+    }
+
+});
 
 module.exports = {registerUser,authUser}

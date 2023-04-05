@@ -3,6 +3,7 @@ require('dotenv').config();
 const connectDB = require('./config/db');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
+const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 
 
 const app = express();
@@ -17,6 +18,9 @@ app.get('/',(req,res) => {
 });
 
 app.use('/users',userRoutes);
+
+app.use(notFound)
+app.use(errorHandler)
 
 
 const PORT = process.env.PORT || 4040
