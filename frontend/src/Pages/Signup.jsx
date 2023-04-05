@@ -9,19 +9,23 @@ function Signup() {
   const [name,setName] = useState("");
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
-  const [error2,setError] = useState("");
-  const [message,setMessage] = useState("");
+  const [error2,setError] = useState(false);
+  const [message,setMessage] = useState(null);
+
 
   const toast = useToast()
 
   const dispatch = useDispatch();
   const userRegister = useSelector((state) => state.userRegister)
   const {loading,error,userInfo} = userRegister;
-  const des = userInfo?.msg;
   const navigate = useNavigate();
 
-  console.log(des)
-  console.log(userInfo)
+  const storage = localStorage.getItem("userInfoF");
+  console.log(storage,"local")
+
+  // console.log(des)
+  console.log(userInfo,"dad")
+  console.log(error,"new")
 
   useEffect(() => {
     if(userInfo?._id){
@@ -36,37 +40,36 @@ function Signup() {
 
     if(!email || !password)
     {
-      setError("All Fields are required!");
+      setMessage("All Fields are required!");
       return;
     }
     const emailRegax = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!emailRegax.test(email))
     {
-      setError("Invalid email address!");
+      setMessage("Invalid email address!");
       return;
     }
     if(password.length < 7)
     {
-      setError("Password must be attleast 7 characters long!");
+      setMessage("Password must be attleast 7 characters long!");
       return;
     }
     dispatch(register(name,email,password));
-    setMessage(des)
-    if(error==undefined)
+    if(error && storage==null )
     {
-      // return toast({
-      //   title: 'Account Details.',
-      //   description: message,
-      //   status: 'success',
-      //   duration: 9000,
-      //   isClosable: true,
-      // })
+      toast({
+        title: 'Network Error.',
+        description: error,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
     }
     else{
       toast({
         title: 'Account Details.',
-        description: error,
-        status: 'error',
+        description: "SignUp Successfully Done!!",
+        status: 'success',
         duration: 9000,
         isClosable: true,
       })
@@ -76,12 +79,6 @@ function Signup() {
 
   return (
     <Box background={"#EAEBED"} display={"flex"} flexDirection={"column"} paddingTop={"80px"}>
-    <Box>
-    {message && <Alert status='info'>
-      <AlertIcon />
-      {des}
-    </Alert>}
-    </Box>
     <Box background={"#EAEBED"} height={"750"} display={"flex"} justifyContent={"center"} alignItems={"center"} >
         <Box width={"50%"} height={"auto"} display={"flex"} justifyContent={"center"} flexDirection={"column"}>
           <Img margin={"auto"} width={"30%"} src={logo} />
@@ -92,7 +89,7 @@ function Signup() {
             <Input type='text' placeholder='Enter Name' value={name} onChange={(e) => setName(e.target.value)} />
             <Input type='email' placeholder='Enter Email' value={email} onChange={(e) => setEmail(e.target.value)} />
             <Input type='password' placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} />
-            {error2 && <Badge colorScheme='red'>{error2}</Badge>}
+            {message && <Badge colorScheme='red'>{message}</Badge>}
             <Button isLoading={loading} background={"#479ece"} color={"white"} onClick={handleSubmit} >Submit</Button>
             <FormHelperText color={"blackAlpha.900"} fontWeight={"bold"} >Already a User? <Link to='/login' >Login</Link> </FormHelperText>
         </FormControl>

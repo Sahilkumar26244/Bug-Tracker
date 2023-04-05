@@ -17,7 +17,6 @@ function Login() {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const {loading,error,userInfo} = userLogin;
-  const des = userInfo?.msg;
 
 
   useEffect(() => {
@@ -26,7 +25,6 @@ function Login() {
     }
   },[userInfo])
 
-  // console.log(userInfo?.token)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,39 +45,32 @@ function Login() {
       return;
     }
     dispatch(login(email,password));
-    setMessage(des)
-    
-    
-    if(error==undefined)
+    if(error)
     {
-      // return toast({
-      //   title: 'Account Details.',
-      //   description: "Login Successfully Done!!",
-      //   status: 'success',
-      //   duration: 9000,
-      //   isClosable: true,
-      // })
-    }
-    else{
-      return toast({
-        title: 'Network Details.',
+      toast({
+        title: 'Netwrok Error.',
         description: error,
         status: 'error',
         duration: 9000,
         isClosable: true,
       })
     }
+    else{
+      toast({
+        title: 'Account Details.',
+        description: "Login Successfully Done!!",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+    }
+    
+    
+    
   }
 
   return (
     <Box background={"#EAEBED"} display={"flex"} flexDirection={"column"} paddingTop={"80px"} >
-      <Box>
-      {message && <Alert status='info'>
-        <AlertIcon />
-        {des}
-      </Alert>}
-      </Box>
-
 
       <Box  height={"750"} display={"flex"} justifyContent={"center"} alignItems={"center"} >
     
@@ -93,7 +84,7 @@ function Login() {
             <Input color={"blackAlpha.900"} type='password' placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} />
             {error2 && <Badge colorScheme='red'>{error2}</Badge>}
             <Button background={"#479ece"} isLoading={loading} color={"white"} onClick={handleSubmit} >Submit</Button>
-            <FormHelperText color={"blackAlpha.900"} fontWeight={"bold"}>New User? <Link to='/signup' >SignUp</Link> </FormHelperText>
+            <FormHelperText color={"blackAlpha.900"} fontWeight={"bold"}>New User? <a href='/signup' >SignUp</a> </FormHelperText>
         </FormControl>
         
     </Box>
